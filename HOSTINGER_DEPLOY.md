@@ -24,7 +24,8 @@ npm run hostinger:build
 هذا السكربت يقوم بـ:
 
 1. `prisma migrate deploy`
-2. `next build`
+2. تشغيل bootstrap آمن للحسابات التجريبية فقط إذا كان `ENABLE_DEMO_BOOTSTRAP=true`
+3. `next build`
 
 ## متغيرات البيئة المطلوبة
 
@@ -36,12 +37,14 @@ JWT_SECRET=ضع_قيمة_طويلة_وعشوائية_جداً
 NEXT_PUBLIC_APP_URL=https://your-domain.com
 NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=
 NEXT_PUBLIC_ENABLE_SOCKET=false
+ENABLE_DEMO_BOOTSTRAP=false
 ```
 
 ملاحظات:
 
 - استخدم `NEXT_PUBLIC_ENABLE_SOCKET=false` على Hostinger Business/Cloud إذا أردت تجنب أي مشاكل محتملة مع WebSocket، وسيبقى نظام الرسائل يعمل عبر polling.
 - إذا فعلت Google Maps لاحقًا أضف المفتاح فقط، وإلا اتركه فارغًا.
+- إذا أردت إنشاء حسابات الـ demo نفسها على بيئة الإنتاج بدون حذف أي بيانات، غيّر `ENABLE_DEMO_BOOTSTRAP=true` ثم نفّذ redeploy مرة واحدة. بعد نجاح النشر يمكنك إعادته إلى `false`.
 
 ## خطوات النشر من hPanel
 
@@ -108,12 +111,13 @@ npm run hostinger:build
 2. شغّل:
 
 ```bash
-npx prisma db seed
+npm run db:bootstrap-demo
 ```
 
 تحذير:
 
-- `seed.ts` الحالي يعيد إنشاء البيانات التجريبية، لذلك لا تستخدمه على قاعدة بيانات فيها بيانات عملاء حقيقية.
+- `db:bootstrap-demo` آمن ويضيف أو يحدّث حسابات demo بدون حذف البيانات الحالية.
+- `seed.ts` الحالي يعيد إنشاء البيانات التجريبية بشكل كامل، لذلك لا تستخدمه على قاعدة بيانات فيها بيانات عملاء حقيقية.
 
 ## بعد النشر
 

@@ -5,11 +5,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "hostinger:build": "prisma migrate deploy && next build",
+    "hostinger:build": "prisma migrate deploy && npm run db:bootstrap-demo:if-enabled && next build",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "db:migrate:deploy": "prisma migrate deploy",
+    "db:bootstrap-demo": "tsx prisma/bootstrap-demo.ts",
+    "db:bootstrap-demo:if-enabled": "tsx prisma/bootstrap-demo.ts --if-enabled",
     "db:seed": "prisma db seed",
     "postinstall": "prisma generate"
   },
