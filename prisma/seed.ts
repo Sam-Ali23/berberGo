@@ -90,16 +90,22 @@ const shopSeeds: ShopSeed[] = [
     ],
     barbers: [
       {
-        name: "أحمد يوسف",
-        bio: "متخصص في القصات الكلاسيكية والستايل الأنيق.",
+        name: "Daniel Brooks",
+        bio: "Specializes in classic cuts with a polished, premium finish.",
         image:
           "https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&w=800&q=80",
       },
       {
-        name: "عمر الحربي",
-        bio: "خبير في تهذيب اللحية والقصات السريعة.",
+        name: "Noah Bennett",
+        bio: "Known for clean beard shaping and efficient modern cuts.",
         image:
           "https://images.unsplash.com/photo-1496345875659-11f7dd282d1d?auto=format&fit=crop&w=800&q=80",
+      },
+      {
+        name: "Leo Carter",
+        bio: "Delivers sharp skin fades and confident styling advice.",
+        image:
+          "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
       },
     ],
   },
@@ -149,16 +155,22 @@ const shopSeeds: ShopSeed[] = [
     ],
     barbers: [
       {
-        name: "سلمان الشريف",
-        bio: "يعشق التفاصيل ويتميز في القصات الحديثة.",
+        name: "Mason Reed",
+        bio: "Focused on precise detailing and fresh contemporary styles.",
         image:
           "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=80",
       },
       {
-        name: "رامي منصور",
-        bio: "خبرة طويلة في العناية الكاملة للرجل.",
+        name: "Ryan Foster",
+        bio: "Experienced in full grooming sessions and smooth client service.",
         image:
           "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
+      },
+      {
+        name: "Adrian Blake",
+        bio: "Blends modern fades with clean scissor work for everyday looks.",
+        image:
+          "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80",
       },
     ],
   },
@@ -208,14 +220,14 @@ const shopSeeds: ShopSeed[] = [
     ],
     barbers: [
       {
-        name: "تركي السبيعي",
-        bio: "متخصص في الخدمة السريعة والدقيقة.",
+        name: "Adam Walker",
+        bio: "Reliable with fast, accurate service for busy appointments.",
         image:
           "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?auto=format&fit=crop&w=800&q=80",
       },
       {
-        name: "فيصل ناصر",
-        bio: "خبرة قوية في القصات المناسبة للعمل اليومي.",
+        name: "Ethan Cole",
+        bio: "Strong at practical office-friendly cuts with neat finishing.",
         image:
           "https://images.unsplash.com/photo-1545167622-3a6ac756afa4?auto=format&fit=crop&w=800&q=80",
       },
@@ -267,14 +279,14 @@ const shopSeeds: ShopSeed[] = [
     ],
     barbers: [
       {
-        name: "مهند البقمي",
-        bio: "يجمع بين القصات الشبابية والسرعة.",
+        name: "Lucas Hayes",
+        bio: "Great with youthful styles, quick turnaround, and crisp lines.",
         image:
           "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80",
       },
       {
-        name: "سعيد الدوسري",
-        bio: "هادئ ودقيق جدًا في القصات المتدرجة.",
+        name: "Benjamin Stone",
+        bio: "Calm, detail-oriented barber with strong taper and fade work.",
         image:
           "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=800&q=80",
       },
@@ -549,6 +561,7 @@ async function main() {
     customer: customer.email,
     shopOwner: "shop@test.com",
     shops: createdShops.length,
+    demoBarbers: createdShops.reduce((total, shop) => total + shop.barberIds.length, 0),
   });
 }
 
