@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "hostinger:build": "prisma migrate deploy && npm run db:bootstrap-demo:if-enabled && next build",
+    "build": "next build --webpack",
+    "hostinger:build": "prisma migrate deploy && npm run db:bootstrap-demo:if-enabled && next build --webpack",
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
