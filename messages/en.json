@@ -82,7 +82,6 @@
     "badge": "Modern grooming marketplace",
     "title": "Book your next barbershop visit with an experience inspired by Airbnb and built for speed.",
     "description": "Browse shops, compare photos, services, and reviews, then choose the date that fits your schedule and book instantly with BerberGo.",
-    "fallbackNotice": "Live shop data is taking a little longer right now, so we are showing a curated preview while everything reconnects in the background.",
     "primaryCta": "Start booking",
     "secondaryCta": "Join as a barbershop",
     "searchTitle": "Search by city, service, and date",
