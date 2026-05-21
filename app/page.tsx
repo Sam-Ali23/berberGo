@@ -6,18 +6,152 @@ import { SectionCard } from "@/components/home/section-card";
 import { ShopCard } from "@/components/shop/shop-card";
 import { buttonClasses } from "@/components/ui/button";
 import { getSessionUser } from "@/lib/auth";
+import { defaultGalleryImages, defaultShopCover } from "@/lib/constants";
 import { getCustomerFacingShops, getFeaturedShops } from "@/lib/data";
 import { getTranslator } from "@/lib/i18n/server";
+import type { BarberShopDto } from "@/types";
 
 export const dynamic = "force-dynamic";
 
+const fallbackShops: BarberShopDto[] = [
+  {
+    id: "fallback-1",
+    ownerId: "fallback-owner-1",
+    name: "BerberGo Lounge",
+    description: "Premium grooming experiences with polished cuts and relaxed lounge vibes.",
+    city: "Riyadh",
+    district: "Al Olaya",
+    address: "Olaya Road, Riyadh",
+    latitude: 24.7136,
+    longitude: 46.6753,
+    coverImage: defaultShopCover,
+    images: defaultGalleryImages,
+    openingTime: "10:00",
+    closingTime: "23:00",
+    isOpen: true,
+    isApproved: true,
+    rating: 4.9,
+    totalReviews: 128,
+    createdAt: new Date(0).toISOString(),
+    updatedAt: new Date(0).toISOString(),
+    minServicePrice: 65,
+    services: [],
+    barbers: [],
+    reviews: [],
+  },
+  {
+    id: "fallback-2",
+    ownerId: "fallback-owner-2",
+    name: "Harbor Fade Studio",
+    description: "Modern fades and beard care with a coastal-inspired atmosphere.",
+    city: "Jeddah",
+    district: "Al Zahra",
+    address: "Prince Sultan Road, Jeddah",
+    latitude: 21.6114,
+    longitude: 39.1551,
+    coverImage:
+      "https://images.unsplash.com/photo-1622288432450-277d0fef5ed6?auto=format&fit=crop&w=1400&q=80",
+    images: defaultGalleryImages,
+    openingTime: "11:00",
+    closingTime: "00:00",
+    isOpen: true,
+    isApproved: true,
+    rating: 4.7,
+    totalReviews: 92,
+    createdAt: new Date(0).toISOString(),
+    updatedAt: new Date(0).toISOString(),
+    minServicePrice: 75,
+    services: [],
+    barbers: [],
+    reviews: [],
+  },
+  {
+    id: "fallback-3",
+    ownerId: "fallback-owner-3",
+    name: "Desert Edge Barber",
+    description: "Refined cuts, calm interiors, and dependable service for everyday style.",
+    city: "Khobar",
+    district: "Al Aqrabiyah",
+    address: "Prince Turki Road, Khobar",
+    latitude: 26.2794,
+    longitude: 50.2083,
+    coverImage:
+      "https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?auto=format&fit=crop&w=1400&q=80",
+    images: defaultGalleryImages,
+    openingTime: "09:00",
+    closingTime: "22:00",
+    isOpen: true,
+    isApproved: true,
+    rating: 4.5,
+    totalReviews: 31,
+    createdAt: new Date(0).toISOString(),
+    updatedAt: new Date(0).toISOString(),
+    minServicePrice: 55,
+    services: [],
+    barbers: [],
+    reviews: [],
+  },
+  {
+    id: "fallback-4",
+    ownerId: "fallback-owner-4",
+    name: "North Cut House",
+    description: "Youthful styling, quick appointments, and a clean premium setup.",
+    city: "Dammam",
+    district: "Al Shatea",
+    address: "Gulf Road, Dammam",
+    latitude: 26.4344,
+    longitude: 50.1033,
+    coverImage:
+      "https://images.unsplash.com/photo-1517832606299-7ae9b720a186?auto=format&fit=crop&w=1400&q=80",
+    images: defaultGalleryImages,
+    openingTime: "12:00",
+    closingTime: "23:59",
+    isOpen: false,
+    isApproved: true,
+    rating: 4.6,
+    totalReviews: 54,
+    createdAt: new Date(0).toISOString(),
+    updatedAt: new Date(0).toISOString(),
+    minServicePrice: 40,
+    services: [],
+    barbers: [],
+    reviews: [],
+  },
+];
+
+async function getHomePageShopData() {
+  try {
+    const [featuredShops, allShops] = await Promise.all([
+      getFeaturedShops(4),
+      getCustomerFacingShops(),
+    ]);
+
+    const normalizedFeaturedShops = featuredShops.length > 0 ? featuredShops : fallbackShops;
+    const normalizedAllShops = allShops.length > 0 ? allShops : fallbackShops;
+
+    return {
+      featuredShops: normalizedFeaturedShops,
+      allShops: normalizedAllShops,
+      isFallback: false,
+    };
+  } catch (error) {
+    console.error("Home page data fallback activated", error);
+
+    return {
+      featuredShops: fallbackShops,
+      allShops: fallbackShops,
+      isFallback: true,
+    };
+  }
+}
+
 export default async function HomePage() {
-  const [session, featuredShops, allShops, { t }] = await Promise.all([
+  const [session, homeData, { t }] = await Promise.all([
     getSessionUser(),
-    getFeaturedShops(4),
-    getCustomerFacingShops(),
+    getHomePageShopData(),
     getTranslator(),
   ]);
+  const { featuredShops, allShops, isFallback } = homeData;
   const primaryHref = session
     ? session.role === "CUSTOMER"
       ? "/customer/shops"
@@ -30,7 +164,7 @@ export default async function HomePage() {
     new Set(
       allShops.flatMap((shop) => (shop.services ?? []).map((service) => service.name)),
     ),
-  ).slice(0, 4);
+      ).slice(0, 4);
 
   return (
     <main className="min-h-screen pb-20">
@@ -47,6 +181,11 @@ export default async function HomePage() {
               <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300 sm:text-lg">
                 {t("Landing.description")}
               </p>
+              {isFallback ? (
+                <p className="mt-4 max-w-2xl text-sm leading-7 text-amber-100/90">
+                  {t("Landing.fallbackNotice")}
+                </p>
+              ) : null}
               <div className="mt-8 max-w-4xl">
                 <HeroSearchForm />
               </div>
